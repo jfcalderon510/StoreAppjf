@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "998852566932",
+    "firebase_url": "https://storeappdamojf-default-rtdb.firebaseio.com",
+    "project_id": "storeappdamojf",
+    "storage_bucket": "storeappdamojf.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:998852566932:android:607316a0d094378dbdb981",
+        "android_client_info": {
+          "package_name": "co.edu.unab.damo.jf.clasejf"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwi4qKcVuhX6ltZYSadDsosQb4HnVrGn0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:998852566932:android:53f837bfb672fa89bdb981",
+        "android_client_info": {
+          "package_name": "co.edu.unab.damo.juanf.storeappv2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwi4qKcVuhX6ltZYSadDsosQb4HnVrGn0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
