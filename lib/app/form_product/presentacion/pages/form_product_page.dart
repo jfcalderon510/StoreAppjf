@@ -16,10 +16,8 @@ class FormProductPage extends StatelessWidget {
     return BlocProvider.value(
       value: DependecyInjection.serviceLocator.get<FormProductBloc>(),
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        
-        appBar: AppBar(
-          
+        resizeToAvoidBottomInset: false,        
+        appBar: AppBar(          
           title: Text(id == null ? "Agregar Producto" : "Actualizar"),
         ),
         body: Column(children: [BodyLoginWidget(id)]),

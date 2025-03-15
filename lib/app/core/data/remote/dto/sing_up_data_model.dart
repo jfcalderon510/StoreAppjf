@@ -30,6 +30,6 @@ class SingUpDataModel {
   }
 
   Map<String, dynamic> toJson() {
-    return <String, dynamic>{"name": name, "document": document, "password": password, "image": image};
+    return <String, dynamic>{"name": name, "document": document, "password": password, "image": image, "user": user};
   }
 }

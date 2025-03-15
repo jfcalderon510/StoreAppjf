@@ -1,32 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-//import 'package:get_it/get_it.dart';
-import 'package:go_router/go_router.dart';
 import 'package:storeappv2/app/di/dependency_injection.dart';
-import 'package:storeappv2/app/home/presentacion/bloc/home_bloc.dart';
-import 'package:storeappv2/app/home/presentacion/bloc/home_event.dart';
-import 'package:storeappv2/app/home/presentacion/bloc/home_state.dart';
-import 'package:storeappv2/app/home/presentacion/model/product_model.dart';
+import 'package:storeappv2/app/users/presentacion/bloc/users_bloc.dart';
+import 'package:storeappv2/app/users/presentacion/bloc/users_event.dart';
+import 'package:storeappv2/app/users/presentacion/bloc/users_state.dart';
+import 'package:storeappv2/app/users/presentacion/model/users_model.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class UsersPage extends StatelessWidget {
+  const UsersPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: BlocProvider.value(
-        value: DependecyInjection.serviceLocator.get<HomeBloc>(),
+        value: DependecyInjection.serviceLocator.get<UsersBloc>(),
         child: Scaffold(
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(60.0),
-            child: AppBarWidget(),
-          ),
-          body: ProductsListWidget(),
-          floatingActionButton: FloatingActionButton(
-            backgroundColor: Colors.orangeAccent,
-            onPressed: () => GoRouter.of(context).pushNamed("form-product"),
-            child: Icon(Icons.add),
-          ),
+          appBar: AppBar(          
+          title: Text("Listado de Usuarios"),
+        ),
+          body: ProductsListWidget(),         
         ),
       ),
     );
@@ -38,19 +30,14 @@ class AppBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.read<HomeBloc>();
+    //final bloc = context.read<UsersBloc>();
     return AppBar(
       backgroundColor: Colors.purple,
       title: Text(
-        "Listado de Productos",
+        "Listado de Usuarios",
         style: TextStyle(color: Colors.white),
       ),
       actions: [
-         IconButton(
-           icon: Icon(Icons.people_rounded, color: Colors.white,),
-           onPressed: () => GoRouter.of(context).pushNamed("users"),
-          // onPressed: () => GoRouter.of(context).go("/users"),
-         ),
         InkWell(
           onTap:
               () => showDialog(
@@ -61,14 +48,7 @@ class AppBarWidget extends StatelessWidget {
                       content: Text(
                         "Está seguro que desea Cerrar la Sesión",
                       ),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context, 'OK');
-                            bloc.add(LogOutEvent());
-                          },
-                          child: const Text('OK'),
-                        ),
+                      actions: <Widget>[                        
                         TextButton(
                           onPressed: () => Navigator.pop(context, 'Cancelar'),
                           child: const Text('Cancelar'),
@@ -76,10 +56,8 @@ class AppBarWidget extends StatelessWidget {
                       ],
                     ),
               ),
-          child: 
-          Icon(            
-            Icons.logout, color: Colors.white),         
-        ),       
+          child: Icon(Icons.logout, color: Colors.white),
+        ),
         SizedBox(width: 16.0),
       ],
     );
@@ -96,16 +74,16 @@ class ProductsListWidget extends StatefulWidget {
 class _ProductsListWidgetState extends State<ProductsListWidget> {
   @override
   Widget build(BuildContext context) {
-    final bloc = context.read<HomeBloc>();
+    final bloc = context.read<UsersBloc>();
    //print("Siiii");
    
-    bloc.add(GetProductsEvent());
-    return BlocConsumer<HomeBloc, HomeState>(
+    bloc.add(GetUsersEvent());
+    return BlocConsumer<UsersBloc, UsersState>(
       listener: (context, state) {
         switch (state) {
           case LoadingState() || EmptyState() || LoadDataState():
             break;
-          case HomeErrorState():
+          case UsersErrorState():
             showDialog(
               context: context,
               builder:
@@ -116,15 +94,13 @@ class _ProductsListWidgetState extends State<ProductsListWidget> {
                       TextButton(
                         onPressed: () {
                           Navigator.pop(context, 'OK');
-                          bloc.add(GetProductsEvent());
+                          bloc.add(GetUsersEvent());
                         },
                         child: const Text('OK'),
                       ),
                     ],
                   ),
-            );
-          case LogOutState():        
-            GoRouter.of(context).goNamed("login");
+            );         
         }
       },
       builder: (context, state) {
@@ -143,7 +119,7 @@ class _ProductsListWidgetState extends State<ProductsListWidget> {
               ),
             );
           case EmptyState():
-            return Center(child: Text("No se encontraron productos"));
+            return Center(child: Text("No se encontraron Usuarios"));
           case LoadDataState():
             return ListView.builder(
               itemCount: state.model.products.length,
@@ -160,53 +136,28 @@ class _ProductsListWidgetState extends State<ProductsListWidget> {
 }
 
 class ProductItemWidget extends StatelessWidget {
-  final ProductModel product;
+  final UserModel product;
 
   const ProductItemWidget(this.product, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.read<HomeBloc>();
-    return InkWell(
-      onTap:
-          () => GoRouter.of(
-            context,
-          ).pushNamed("form-product-u", pathParameters: {"id": product.id}),
-      // onTap: () => GoRouter.of(context).pushNamed("form-product-u"),
-      onLongPress:
-          () => showDialog(
-            context: context,
-            builder:
-                (BuildContext context) => AlertDialog(
-                  title: const Text('Eliminación de Producto'),
-                  content: Text(
-                    "Está seguro de eliminar este producto?: ${product.name}",
-                  ),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context, 'OK');
-                        bloc.add(DeleteProductEven(id: product.id));
-                      },
-                      child: const Text('OK'),
-                    ),
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, 'Cancelar'),
-                      child: const Text('Cancelar'),
-                    ),
-                  ],
-                ),
-          ),
+    final bloc = context.read<UsersBloc>();
+    return InkWell(    
+        
       child: Card(
         child: Row(
           children: [
-            Image.network(product.urlImage, width: 150.0, fit: BoxFit.contain),
+            Image.network(product.image, width: 150.0, fit: BoxFit.contain),
             Expanded(
               child: SizedBox(
                 height: 150.0,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [Text(product.name), Text("\$${product.price}")],
+                  children: [
+                    Text(product.name), 
+                    Text(product.document),
+                    Text(product.user)],
                 ),
               ),
             ),

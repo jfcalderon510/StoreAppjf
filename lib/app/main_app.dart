@@ -5,6 +5,7 @@ import 'package:storeappv2/app/form_product/presentacion/pages/form_product_page
 import 'package:storeappv2/app/home/presentacion/pages/home_page.dart';
 import 'package:storeappv2/app/login/presentacion/pages/login_page.dart';
 import 'package:storeappv2/app/sing_up/presentacion/pages/form_sing_up_page.dart';
+import 'package:storeappv2/app/users/presentacion/pages/users_page.dart';
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
@@ -54,6 +55,11 @@ class MainApp extends StatelessWidget {
           builder:
               (_, state) => FormProductPage(id: state.pathParameters["id"]),
           name: "form-product-u",
+        ),
+         GoRoute(
+          path: "/users",
+          builder: (_, _) => UsersPage(),
+          name: "users",
         ),
       ],
     );
